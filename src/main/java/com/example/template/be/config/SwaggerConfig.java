@@ -30,12 +30,13 @@ public class SwaggerConfig {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Bean
-	public Docket getDocket() {
-		LoggerHelper.log(logger, String.format("Swagger will be configured for endpoint prefix: %s", endpointPrefix));
+	Docket getDocket() {
+		LoggerHelper.log(logger, String.format("Swagger will be configured for package %s for endpoint prefix: %s",
+				controllerPackage, endpointPrefix));
 
 		return new Docket(DocumentationType.SWAGGER_2).apiInfo(getApiInfo()).select()
-				.apis(RequestHandlerSelectors.basePackage(controllerPackage)).paths(PathSelectors.ant(endpointPrefix))
-				.build();
+				.apis(RequestHandlerSelectors.basePackage(controllerPackage))
+				.paths(PathSelectors.ant(endpointPrefix + "/**")).build();
 	}
 
 	private ApiInfo getApiInfo() {
